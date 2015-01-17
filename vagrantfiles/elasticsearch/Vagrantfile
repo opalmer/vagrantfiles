@@ -2,13 +2,10 @@ VAGRANTFILE_API_VERSION = "2"
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.box = "trusty"
-  config.vm.define :elasticsearch do |t|
-  end
 
   config.vm.provider "vmware_fusion" do |v|
-    v.name = "elasticsearch"
-    v.vmx["name"] = "elasticsearch"   
-    v.memory = 2048;
+    v.vmx["name"] = "elasticsearch"
+    v.vmx["memsize"] = "2048"
   end
 
   config.vm.provision "shell", inline: "wget -qO - http://packages.elasticsearch.org/GPG-KEY-elasticsearch | apt-key add -"

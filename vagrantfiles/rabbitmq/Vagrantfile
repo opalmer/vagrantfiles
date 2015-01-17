@@ -2,11 +2,8 @@ VAGRANTFILE_API_VERSION = "2"
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.box = "trusty"
-  config.vm.define :rabbitmq do |t|
-  end
 
   config.vm.provider "vmware_fusion" do |v|
-    v.name = "rabbitmq"
     v.vmx["name"] = "rabbitmq"
     v.vmx["memsize"] = "512"
   end

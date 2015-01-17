@@ -2,8 +2,6 @@ VAGRANTFILE_API_VERSION = "2"
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.box = "trusty"
-  config.vm.define :docker do |t|
-  end
 
   config.vm.provider "vmware_fusion" do |v|
     v.vmx["name"] = "docker"
