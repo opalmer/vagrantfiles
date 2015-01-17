@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 
+from __future__ import print_function
 
 import argparse
 import json
@@ -12,10 +13,10 @@ from os.path import isfile, dirname, abspath, join
 from pprint import pprint
 
 if not sys.platform.startswith("darwin"):
-    print "WARNING"
-    print "WARNING: This tool was built and tested on OS X using vmware fusion."
-    print "WARNING: It may not operate properly on other platforms"
-    print "WARNING"
+    print("WARNING")
+    print("WARNING: This tool was built and tested on OS X using vmware")
+    print("WARNING: fusion. It may not operate properly on other platforms")
+    print("WARNING")
 
 parser = argparse.ArgumentParser(
     description="Builds a vagrant box from a VMWare host"
@@ -51,12 +52,15 @@ if remove_paths:
 
     answer = ""
     while answer not in ("y", "n"):
-        answer = raw_input("Remove these non-essential files? [y/n] ")
+        try:
+            answer = raw_input("Remove these non-essential files? [y/n] ")
+        except NameError:
+            answer = input("Remove these non-essential files? [y/n] ")
 
     if answer == "y":
         subprocess.check_call(["rm", "-rfv"] + remove_paths)
 else:
-    print "No files to cleanup"
+    print("No files to cleanup")
 
 # Write out the metadata file
 metadata = {
@@ -66,7 +70,7 @@ metadata = {
 }
 with open(join(root, "metadata.json"), "w") as metadata_file:
     json.dump(metadata, metadata_file, indent=4)
-print "wrote %s" % metadata_file.name
+print("wrote %s" % metadata_file.name)
 
 # Create the .box file
 chdir(root)
@@ -76,7 +80,7 @@ with tarfile.open(args.output, mode="w:gz") as tar:
             continue
 
         path = join(root, path)
-        print "adding file: %s" % path
+        print("adding file: %s" % path)
         tar.add(path)
 
-print "DONE.    Wrote %s." % abspath(args.output)
+print("DONE.    Wrote %s." % abspath(args.output))
