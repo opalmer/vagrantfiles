@@ -1,0 +1,21 @@
+VAGRANTFILE_API_VERSION = "2"
+
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+  config.vm.box = "trusty"
+  config.vm.define :rabbitmq do |t|
+  end
+
+  config.vm.provider "vmware_fusion" do |v|
+    v.name = "rabbitmq"
+    v.vmx["name"] = "rabbitmq"
+    v.vmx["memsize"] = "512"
+  end
+
+  config.vm.provision "shell", inline: "apt-get update"
+  config.vm.provision "shell", inline: "apt-get install -y rabbitmq-server"
+  config.vm.provision "shell", inline: "rabbitmq-plugins enable rabbitmq_management"
+  config.vm.provision "shell", inline: "service rabbitmq-server restart"
+  config.vm.provision "shell", inline: "apt-get -y dist-upgrade"
+  config.vm.network "forwarded_port", guest: 5672, host: 5672
+  config.vm.network "forwarded_port", guest: 15672, host: 15672
+end

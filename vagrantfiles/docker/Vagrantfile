@@ -1,0 +1,18 @@
+VAGRANTFILE_API_VERSION = "2"
+
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+  config.vm.box = "trusty"
+  config.vm.define :docker do |t|
+  end
+
+  config.vm.provider "vmware_fusion" do |v|
+    v.vmx["name"] = "docker"
+    v.vmx["memsize"] = "4096"
+    v.vmx["numvcpus"] = "4"
+  end
+
+  config.vm.provision "shell", inline: "apt-get update"
+  config.vm.provision "shell", inline: "apt-get -y upgrade"
+  config.vm.provision "shell", inline: "curl -sSL https://get.docker.com/ubuntu/ | sh"
+  config.vm.provision "shell", inline: "apt-get -y install lxc-docker"
+end
